@@ -41,5 +41,43 @@ def test_errors():
                           ('error', 'IAS'), 
                           ('noun', 'princess')])
 
+
+
+
+def test_Sentence():
+    first_sentence = ex49.Sentence(('noun', 'princess'), ('verb', 'go'), ('direction', 'north'))
+
+    assert_equal(first_sentence.subject, "princess")
+    assert_equal(first_sentence.verb, "go")
+    assert_equal(first_sentence.object, "north")
+
+def test_peek():
+    assert_equal(ex49.peek([('noun', 'princess')]), 'noun')
+
+def test_match(): 
+    assert_equal(ex49.match([('noun', 'princess'), ('verb', 'go'), ('direction', 'north')], 'noun'), ('noun', 'princess'))
+    assert_equal(ex49.match([('princess', 'error')], 'noun'), None)
+
+def test_parse_verb():
+    assert_equal(ex49.parse_verb([('verb', 'go'), ('stop', 'the'), ('direction', 'north')]), ('verb', 'go'))
+    assert_raises(Exception, ex49.parse_verb, ([('noun', 'princess'), ('verb', 'go'), ('stop', 'the'), ('direction', 'north')]))
+ 
+def test_parse_object():
+    assert_equal(ex49.parse_object([('stop', 'the'), ('direction', 'north'), ('verb', 'go')]), ('direction', 'north'))
+    assert_equal(ex49.parse_object([('stop', 'the'), ('noun', 'bear'), ('verb', 'go')]), ('noun', 'bear')) 
+    assert_raises(Exception, ex49.parse_object, ([('verb', 'go'), ('noun', 'princess'), ('verb', 'go'), ('stop', 'the'), ('direction', 'north')]))
+
+def test_parse_subject():
+    second_sentence = ex49.parse_subject([('verb', 'go'), ('direction', 'north')], ('noun', 'princess'))
     
+    assert_equal(second_sentence.object, 'north')
+    assert_equal(second_sentence.subject, 'princess')
+    assert_equal(second_sentence.verb, 'go')
+
+def test_parse_sentence():
+    s1 = ex49.parse_sentence(lexicon.scan("princess go north"))
+    
+    assert_equal(s1.object, 'north')
+    assert_equal(s1.subject, 'princess')
+    assert_equal(s1.verb, 'go')
 
