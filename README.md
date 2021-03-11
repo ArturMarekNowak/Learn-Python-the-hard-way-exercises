@@ -4,7 +4,6 @@
 ## Table of contents
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [Features](#features)
 * [Status](#status)
 
 ## Technologies
